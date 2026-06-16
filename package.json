@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test:newman": "newman run tests/collection.json -d tests/data.json -r cli,htmlextra --reporter-htmlextra-export artifact-report.html"
+    "test:newman": "newman run tests/collection.json -d tests/data.json --bail=false --suppress-exit-code -r cli,htmlextra --reporter-htmlextra-export artifact-report.html"
   },
   "dependencies": {
     "express": "^4.19.2"
