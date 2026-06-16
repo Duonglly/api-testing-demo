@@ -18,21 +18,17 @@ jobs:
       - name: Bước 3 - Cài đặt các thư viện liên quan
         run: npm install
 
-      - name: Bước 4 - Khởi chạy Web API ngầm (Dùng nohup để bảo vệ process)
-        run: nohup node server.js > server.log 2>&1 &
-
-      - name: Bước 5 - Chờ 5 giây và kiểm tra trạng thái Server
-        run: |
-          sleep 5
-          cat server.log
-
-      - name: Bước 6 - Cài đặt Newman toàn cục trên máy ảo
+      - name: Bước 4 - Cài đặt Newman toàn cục trên máy ảo
         run: npm install -g newman newman-reporter-htmlextra
 
-      - name: Bước 7 - Thực thi chiến lược kiểm thử API tự động
-        run: newman run tests/collection.json -d tests/data.json -r cli,htmlextra --reporter-htmlextra-export artifact-report.html
+      - name: Bước 5 - Bật Server ngầm VÀ Chạy Test đồng thời (Gộp bước)
+        run: |
+          node server.js &
+          echo "Đang chờ 5 giây cho Server lên hẳn..."
+          sleep 5
+          newman run tests/collection.json -d tests/data.json -r cli,htmlextra --reporter-htmlextra-export artifact-report.html
 
-      - name: Bước 8 - Đẩy file báo cáo HTML lên thành kết quả trên GitHub Artifacts
+      - name: Bước 6 - Đẩy file báo cáo HTML lên thành kết quả trên GitHub Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
