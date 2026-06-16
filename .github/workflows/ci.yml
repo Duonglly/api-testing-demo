@@ -1,0 +1,38 @@
+name: API Testing Deployment CI Pipeline
+
+on: [push, pull_request] # Kích hoạt khi có code mới push lên
+
+jobs:
+  run-api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Bước 1 - Lấy mã nguồn từ GitHub về máy ảo Linux
+        uses: actions/checkout@v4
+
+      - name: Bước 2 - Thiết lập môi trường Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Bước 3 - Cài đặt các thư viện liên quan
+        run: npm install
+
+      - name: Bước 4 - Khởi chạy Web API ngầm (Background)
+        run: node server.js &
+
+      - name: Bước 5 - Chờ 3 giây để đảm bảo Server đã lên hoàn toàn
+        run: sleep 3
+
+      - name: Bước 6 - Cài đặt Newman toàn cục trên máy ảo
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Bước 7 - Thực thi chiến lược kiểm thử API tự động
+        run: newman run tests/collection.json -d tests/data.json -r cli,htmlextra --reporter-htmlextra-export artifact-report.html
+
+      - name: Bước 8 - Đẩy file báo cáo HTML lên thành kết quả trên GitHub Artifacts
+        if: always() # Luôn chạy bước này kể cả test fail để lấy báo cáo xem lỗi ở đâu
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kế-Quả-Kiểm-Thử-API
+          path: artifact-report.html

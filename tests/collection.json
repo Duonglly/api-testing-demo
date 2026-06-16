@@ -1,0 +1,215 @@
+{
+  "info": {
+    "_postman_id": "5e7b74a3-7df2-4e76-b328-7081155373c0",
+    "name": "API Strategic Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55926271",
+    "_collection_link": "https://go.postman.co/collection/55926271-5e7b74a3-7df2-4e76-b328-7081155373c0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "1. Login Admin",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "2. Create Product - Success & Contract",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code phải là 201 Created\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "// Thiết kế Schema để check Contract cấu hình dữ liệu trả về\r",
+              "const schema = {\r",
+              "    \"type\": \"object\",\r",
+              "    \"required\": [\"message\", \"data\"],\r",
+              "    \"properties\": {\r",
+              "        \"message\": { \"type\": \"string\" },\r",
+              "        \"data\": {\r",
+              "            \"type\": \"object\",\r",
+              "            \"required\": [\"name\", \"quantity\"],\r",
+              "            \"properties\": {\r",
+              "                \"name\": { \"type\": \"string\" },\r",
+              "                \"quantity\": { \"type\": \"number\" }\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "pm.test(\"Contract Validation - Cấu trúc dữ liệu trả về chuẩn xác\", function () {\r",
+              "    pm.response.to.have.jsonSchema(schema);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Iphone 15 Pro\",\r\n    \"quantity\": 50\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Create Product - Auth Error",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Không có token phải trả về lỗi 403 Forbidden\", function () {\r",
+              "    pm.response.to.have.status(403);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Test\", \"quantity\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4: Kiểm thử Hướng dữ liệu & Lỗi biên (Data-driven & Boundary)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ép kiểu về Number vì dữ liệu từ file truyền vào đôi khi hiểu nhầm là String\r",
+              "var expectedStatus = Number(pm.variables.get(\"expectedStatus\"));\r",
+              "\r",
+              "pm.test(\"Kiểm thử biên thành công với Status mong đợi là: \" + expectedStatus, function () {\r",
+              "    pm.response.to.have.status(expectedStatus);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"{{prodName}}\",\r\n    \"quantity\": {{prodQty}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    }
+  ]
+}
