@@ -1,19 +1,13 @@
 {
   "name": "api-testing-demo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API Testing CI/CD Automation",
+  "main": "server.js",
   "scripts": {
-    "api-test": "npx newman run tests/collection.json -d tests/data.json -r cli,htmlextra --reporter-htmlextra-export report.html"
+    "start": "node server.js",
+    "test:newman": "newman run tests/collection.json -d tests/data.json -r cli,htmlextra --reporter-htmlextra-export artifact-report.html"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "express": "^4.22.2"
-  },
-  "devDependencies": {
-    "newman-reporter-htmlextra": "^1.23.1"
+    "express": "^4.19.2"
   }
 }

@@ -21,15 +21,8 @@ jobs:
       - name: Bước 4 - Cài đặt Newman toàn cục trên máy ảo
         run: npm install -g newman newman-reporter-htmlextra
 
-      - name: Bước 5 - Bật Server ngầm VÀ Chạy Test đồng thời (Có In Log Debug)
-        run: |
-          node server.js > server.log 2>&1 &
-          echo "Đang chờ 5 giây cho Server lên hẳn..."
-          sleep 5
-          echo "=== NHẬT KÝ ĐĂNG KÝ CỦA SERVER ==="
-          cat server.log
-          echo "=================================="
-          newman run tests/collection.json -d tests/data.json -r cli,htmlextra --reporter-htmlextra-export artifact-report.html
+      - name: Bước 5 - Chờ Server lên hẳn rồi mới Tự Động Chạy Test
+        run: npx start-server-and-test start http://127.0.0.1:3000 test:newman
 
       - name: Bước 6 - Đẩy file báo cáo HTML lên thành kết quả trên GitHub Artifacts
         if: always()
