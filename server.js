@@ -39,4 +39,7 @@ app.post('/api/products', (req, res) => {
 });
 
 // Chạy server ở cổng 3000
-app.listen(3000, () => console.log('Server đang chạy tại http://localhost:3000'));
+const PORT = 3000;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server đang chạy ổn định tại cổng ${PORT}`);
+});

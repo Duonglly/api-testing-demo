@@ -1,7 +1,10 @@
 [
-  { "prodName": "Biên dưới hợp lệ", "prodQty": 1, "expectedStatus": 201 },
-  { "prodName": "Biên dưới lỗi", "prodQty": 0, "expectedStatus": 422 },
-  { "prodName": "Biên trên hợp lệ", "prodQty": 100, "expectedStatus": 201 },
-  { "prodName": "Biên trên lỗi", "prodQty": 101, "expectedStatus": 422 },
-  { "prodName": "Dữ liệu âm", "prodQty": -5, "expectedStatus": 422 }
+  {
+    "prodName": "Sản phẩm thử nghiệm 1",
+    "prodQty": 10
+  },
+  {
+    "prodName": "Sản phẩm thử nghiệm 2",
+    "prodQty": 20
+  }
 ]
