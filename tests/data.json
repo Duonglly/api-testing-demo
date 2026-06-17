@@ -1,10 +1,12 @@
 [
-  {
-    "prodName": "Sản phẩm thử nghiệm 1",
-    "prodQty": 10
-  },
-  {
-    "prodName": "Sản phẩm thử nghiệm 2",
-    "prodQty": 20
-  }
+  { "prodName": "iPhone 15 Pro Max", "prodQty": 50, "expectedStatus": 201 },
+  { "prodName": "Samsung Galaxy S24", "prodQty": 1, "expectedStatus": 201 },
+  { "prodName": "MacBook Air M3", "prodQty": 100, "expectedStatus": 201 },
+  { "prodName": "", "prodQty": 10, "expectedStatus": 400 },
+  { "prodName": "Bàn phím Cơ @#$!", "prodQty": 5, "expectedStatus": 201 },
+  { "prodName": "Chuột Logitech", "prodQty": 0, "expectedStatus": 400 },
+  { "prodName": "Tai nghe Sony", "prodQty": 101, "expectedStatus": 400 },
+  { "prodName": "Màn hình Dell", "prodQty": -5, "expectedStatus": 400 },
+  { "prodName": "Sạc Anker 20K", "prodQty": 99, "expectedStatus": 201 },
+  { "prodName": "Cáp sạc USB-C", "prodQty": 2, "expectedStatus": 201 }
 ]
